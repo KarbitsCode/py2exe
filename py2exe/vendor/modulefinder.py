@@ -449,8 +449,8 @@ class ModuleFinder:
         code = co.co_code
         names = co.co_names
         consts = co.co_consts
-        opargs = [(op, arg) for _, op, arg in dis._unpack_opargs(code)
-                  if op != EXTENDED_ARG]
+        opargs = [(instr.opcode, instr.arg) for instr in dis.get_instructions(co)
+                  if instr.opcode != EXTENDED_ARG]
         for i, (op, oparg) in enumerate(opargs):
             if op in STORE_OPS:
                 yield "store", (names[oparg],)
